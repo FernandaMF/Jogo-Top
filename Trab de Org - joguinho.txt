@@ -1,0 +1,184 @@
+call PrintPista
+
+loadn r0, #1179
+loadn r1, #'w'
+loadn r2, #'a'
+loadn r3, #'s'
+loadn r4, #'d'
+loadn r5, #' '
+	
+jmp main
+
+main:
+	
+	inchar r6			;le o valor do teclado
+	cmp r6, r1			;compara o comando do teclado com o 'w'
+	ceq MoveCima		;se for igual, move carrinho para cima
+	cmp r6, r2
+	ceq MoverEsquerda
+	cmp r6, r3
+	ceq MoveBaixo
+	cmp r6, r4
+	ceq MoverDireita
+	
+	
+jmp main
+
+MoveCima:
+
+	push r6
+	
+	loadn r6, #599
+	cmp r0, r6
+	jel NaoMexeCima
+	
+	call ApagarCarro
+	loadn r7, #40
+	sub r0, r0, r7
+	call PrintCarro
+	
+NaoMexeCima:
+
+	pop r6
+	
+rts
+
+
+MoveBaixo:
+	 
+	push r6
+	
+	loadn r6, #1159
+	cmp r0, r6
+	jeg NaoMexeBaixo
+	
+	call ApagarCarro
+	loadn r7, #40
+	add r0, r0, r7
+	;cmp r0, r6
+	call PrintCarro
+	
+NaoMexeBaixo:
+
+	pop r6
+	
+rts
+
+
+MoverEsquerda:
+
+	;push r1
+	;push r4
+	;push r5
+	push r6
+	
+	;loadn r1, #8
+	;loadn r4, #40
+	loadn r7, #560
+	
+	;mod r5, r0, r4
+	;cmp r5, r1
+	;jle NaoMexeEsquerda 
+	
+	cmp r0, r7
+	jel NaoMexeEsquerda
+	
+	
+	call ApagarCarro
+	dec r0
+	call PrintCarro
+	
+	;pop r5
+	;pop r4
+	;pop r1
+	
+NaoMexeEsquerda:
+
+	pop r6
+	
+rts
+
+MoverDireita:
+
+	;push r1
+	;push r4
+	;push r5
+	push r6
+	
+	;loadn r1, #30
+	;loadn r4, #40
+	loadn r7, #1199
+	
+	
+	;mod r5, r0, r4
+	;cmp r5, r1
+	;jle NaoMexeDireita 
+	
+	cmp r0, r7
+	jeg NaoMexeDireita
+	
+	call ApagarCarro
+	inc r0
+	call PrintCarro
+	
+	;push r5
+	;push r4
+	;push r1
+	
+NaoMexeDireita:
+
+	pop r6
+	
+rts
+
+PrintCarro:
+    push r6
+
+    loadn r6, #'X'
+
+    outchar r6, r0      ; Imprime a primeira parte do carro
+
+    pop r6
+rts
+
+ApagarCarro:
+	push r6
+	
+	loadn r6, #' '
+	outchar r6, r0
+	
+	pop r6
+rts
+
+PrintPista:
+	push r0
+	push r1
+	push r2
+	push r3
+	push r4
+	push r5
+	
+	
+	loadn r1,#8
+	loadn r2,#30
+	loadn r3,#40
+	loadn r4,#'|'
+	loadn r5,#1230
+	
+loopPrint:
+	outchar r4,r1
+	outchar r4,r2
+	add r1,r1,r3
+	add r2,r2,r3
+	cmp r2,r5
+	jne loopPrint
+	pop r5
+	pop r4
+	pop r3
+	pop r2
+	pop r1
+	pop r0
+
+rts
+
+ halt
